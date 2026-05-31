@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cricket Match Intelligence</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css?v=3" />
+</head>
+<body>
+  <header>
+    <div class="logo">🏏 Cricket Intelligence</div>
+    <nav id="nav">
+      <button class="nav-btn active" data-tab="parse">Parse</button>
+      <button class="nav-btn" data-tab="scorecard">Scorecard</button>
+      <button class="nav-btn" data-tab="analytics">Analytics</button>
+      <button class="nav-btn" data-tab="qa">Ask AI</button>
+      <button class="nav-btn" data-tab="summary">Summary</button>
+    </nav>
+    <div id="match-badge" class="hidden">
+      <span id="match-id-label"></span>
+    </div>
+  </header>
+
+  <main>
+    <!-- PARSE TAB -->
+    <section id="tab-parse" class="tab active">
+      <div class="card">
+        <h2>Parse Commentary</h2>
+        <p class="hint">Paste ball-by-ball commentary. Each line must start with <code>over.ball:</code> e.g. <code>1.1: Bumrah to Root, 1 run</code></p>
+        <div class="form-row">
+          <input id="team1" placeholder="Batting team" value="India" />
+          <input id="team2" placeholder="Bowling team" value="Australia" />
+          <input id="innings" type="number" placeholder="Innings" value="1" min="1" max="4" />
+          <input id="target" type="number" placeholder="Target (2nd innings)" />
+        </div>
+        <textarea id="commentary-input" rows="14" placeholder="Paste commentary here..."></textarea>
+        <div class="btn-row">
+          <button id="load-sample" class="btn-secondary">Load Sample</button>
+          <label class="btn-secondary file-label" title="Upload .txt or .csv file">
+            📂 Upload File
+            <input type="file" id="file-input" accept=".txt,.csv" style="display:none" />
+          </label>
+          <button id="parse-btn" class="btn-primary">Parse Commentary →</button>
+        </div>
+        <div id="file-info" class="file-info hidden"></div>
+        <div id="parse-status" class="status hidden"></div>
+      </div>
+    </section>
+
+    <!-- SCORECARD TAB -->
+    <section id="tab-scorecard" class="tab hidden">
+      <div id="innings-switcher" class="innings-switcher hidden"></div>
+      <div id="scorecard-header" class="score-header"></div>
+      <div class="two-col">
+        <div class="card">
+          <h3>Batting</h3>
+          <table id="batting-table">
+            <thead><tr><th>Batsman</th><th>R</th><th>B</th><th>4s</th><th>6s</th><th>SR</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Bowling</h3>
+          <table id="bowling-table">
+            <thead><tr><th>Bowler</th><th>O</th><th>R</th><th>W</th><th>Eco</th><th>Dots</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <h3>Partnerships</h3>
+          <div id="partnerships-list"></div>
+        </div>
+        <div class="card">
+          <h3>Over History</h3>
+          <div id="over-history"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Ball-by-Ball</h3>
+        <div id="ball-by-ball"></div>
+      </div>
+    </section>
+
+    <!-- ANALYTICS TAB -->
+    <section id="tab-analytics" class="tab hidden">
+      <div class="two-col">
+        <div class="card">
+          <h3>Momentum Timeline</h3>
+          <canvas id="momentum-chart" height="120"></canvas>
+        </div>
+        <div class="card">
+          <h3>Phase Breakdown</h3>
+          <canvas id="phase-chart" height="120"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Turning Points</h3>
+        <div id="turning-points-list"></div>
+      </div>
+    </section>
+
+    <!-- Q&A TAB -->
+    <section id="tab-qa" class="tab hidden">
+      <div class="card">
+        <h2>Ask about the match</h2>
+        <p class="hint">Ask anything — scores, player stats, key moments, comparisons.</p>
+        <div class="qa-suggestions">
+          <button class="suggestion" data-q="What is the current score?">Current score?</button>
+          <button class="suggestion" data-q="Who is the top scorer?">Top scorer?</button>
+          <button class="suggestion" data-q="What were the key turning points?">Key turning points?</button>
+          <button class="suggestion" data-q="Which bowler has the best economy?">Best economy?</button>
+          <button class="suggestion" data-q="How many boundaries were hit?">Total boundaries?</button>
+          <button class="suggestion" data-q="Who took the most wickets?">Most wickets?</button>
+        </div>
+        <div class="qa-input-row">
+          <input id="qa-input" placeholder="Type your question..." />
+          <button id="qa-btn" class="btn-primary">Ask →</button>
+        </div>
+        <div id="qa-history"></div>
+      </div>
+    </section>
+
+    <!-- SUMMARY TAB -->
+    <section id="tab-summary" class="tab hidden">
+      <div class="card">
+        <h2>Match Summary</h2>
+        <div class="btn-row">
+          <button class="summary-btn btn-secondary" data-type="headline">Headline</button>
+          <button class="summary-btn btn-secondary" data-type="short">Short</button>
+          <button class="summary-btn btn-primary" data-type="detailed">Full Report</button>
+        </div>
+        <div id="summary-output" class="summary-box"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/static/app.js?v=3"></script>
+</body>
+</html>
