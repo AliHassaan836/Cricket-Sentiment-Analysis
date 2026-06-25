@@ -1,0 +1,38 @@
+# ===========================================================================
+# AI Cricket Intelligence System — Python dependencies
+# ===========================================================================
+# Install everything with:
+#     pip install -r requirements.txt
+#
+# The application is designed so that the CORE group is sufficient to run the
+# full deterministic analytics, all visualizations, validation, and report
+# export. The OPTIONAL group adds transformer-based summaries, spaCy NER, and
+# NLTK tokenization. If the optional packages (or their models) are absent, the
+# app automatically falls back to rule-based / template equivalents and clearly
+# reports which backend is active. No feature silently fabricates data.
+# ===========================================================================
+
+# ---- CORE (required) ------------------------------------------------------
+streamlit>=1.31
+pandas>=2.0
+numpy>=1.24
+plotly>=5.18
+matplotlib>=3.7
+fpdf2>=2.7            # PDF export (falls back to plain-text if missing)
+
+# ---- OPTIONAL (NLP enhancements) ------------------------------------------
+# These are larger downloads. Comment them out for a lightweight install;
+# the app remains fully functional without them.
+spacy>=3.7
+nltk>=3.8
+transformers>=4.38
+torch>=2.1
+sentencepiece>=0.1.99   # required by some T5/BART tokenizers
+
+# ---- DEVELOPMENT / TESTING ------------------------------------------------
+pytest>=8.0
+
+# After installing the optional NLP group, download the models:
+#     python -m spacy download en_core_web_sm
+#     python -m nltk.downloader punkt
+# (Transformer summarization models download automatically on first use.)
